@@ -77,7 +77,7 @@ parcelRequire = (function (modules, cache, entry) {
 
   // Override the current require with this new one
   return newRequire;
-})({9:[function(require,module,exports) {
+})({10:[function(require,module,exports) {
 var bundleURL = null;
 function getBundleURLCached() {
   if (!bundleURL) {
@@ -107,7 +107,7 @@ function getBaseURL(url) {
 
 exports.getBundleURL = getBundleURLCached;
 exports.getBaseURL = getBaseURL;
-},{}],8:[function(require,module,exports) {
+},{}],9:[function(require,module,exports) {
 var bundle = require('./bundle-url');
 
 function updateLink(link) {
@@ -138,25 +138,24 @@ function reloadCSS() {
 }
 
 module.exports = reloadCSS;
-},{"./bundle-url":9}],6:[function(require,module,exports) {
+},{"./bundle-url":10}],6:[function(require,module,exports) {
 
         var reloadCSS = require('_css_loader');
         module.hot.dispose(reloadCSS);
         module.hot.accept(reloadCSS);
       
-},{"_css_loader":8}],7:[function(require,module,exports) {
+},{"_css_loader":9}],7:[function(require,module,exports) {
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-exports.default = function () {
+exports.default = function (width, len, interval) {
   var container = document.querySelector('.container');
   var slider = document.querySelector('.slider');
   var dots = [].slice.call(document.querySelectorAll('.dots span'));
   var currentIndex = 0;
-  var len = 3;
   var isAnimate = false;
   var timer = void 0;
   // 无限滚动
@@ -174,19 +173,19 @@ exports.default = function () {
     function go() {
       if (speed < 0 && parseInt(slider.style.left) > newOffset || speed > 0 && parseInt(slider.style.left) < newOffset) {
         slider.style.left = parseInt(slider.style.left) + speed + 'px';
-        if (slider.style.left > -440) {
-          slider.style.left = -1760 + 'px';
+        if (slider.style.left > -width) {
+          slider.style.left = -width * (len + 1) + 'px';
         }
-        if (slider.style.left < -1760) {
-          slider.style.left = -440 + 'px';
+        if (slider.style.left < width * (len + 1)) {
+          slider.style.left = -width + 'px';
         }
         setTimeout(go, interval);
       } else {
         slider.style.left = newOffset + 'px';
-        if (newOffset > -440) {
-          slider.style.left = -440 * len + 'px';
+        if (newOffset > -width) {
+          slider.style.left = -width * len + 'px';
         }
-        if (newOffset < -440 * len) {
+        if (newOffset < -width * len) {
           slider.style.left = '-440px';
         }
         isAnimate = false;
@@ -198,13 +197,13 @@ exports.default = function () {
   // 自动播放
   function play() {
     timer = setInterval(function () {
-      animate(-440);
+      animate(-width);
       currentIndex++;
-      if (currentIndex == 3) {
+      if (currentIndex == len) {
         currentIndex = 0;
       }
       showDot();
-    }, 3000);
+    }, interval);
   }
 
   // 停止播放
@@ -225,7 +224,7 @@ exports.default = function () {
   function dotClick() {
     dots.forEach(function (item, index) {
       item.onclick = function () {
-        var offset = -440 * (index - currentIndex);
+        var offset = -width * (index - currentIndex);
         currentIndex = index;
         animate(offset);
         showDot();
@@ -234,6 +233,7 @@ exports.default = function () {
   }
   container.onmouseover = stop;
   container.onmouseout = play;
+
   play();
   dotClick();
 };
@@ -250,8 +250,8 @@ var _main2 = _interopRequireDefault(_main);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-(0, _main2.default)();
-},{"./static/style.css":6,"./component/main.js":7}],15:[function(require,module,exports) {
+(0, _main2.default)(440, 3, 3000);
+},{"./static/style.css":6,"./component/main.js":7}],11:[function(require,module,exports) {
 
 var OVERLAY_ID = '__parcel__error__overlay__';
 
@@ -281,7 +281,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = '' || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + '49696' + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + '57405' + '/');
   ws.onmessage = function (event) {
     var data = JSON.parse(event.data);
 
@@ -420,5 +420,5 @@ function hmrAccept(bundle, id) {
     return hmrAccept(global.parcelRequire, id);
   });
 }
-},{}]},{},[15,2])
+},{}]},{},[11,2])
 //# sourceMappingURL=/js-slider.78ae5b3f.map

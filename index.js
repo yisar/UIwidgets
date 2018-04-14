@@ -1,4 +1,4 @@
 import classes from './static/style.css'
-import main from './component/main.js'
+import Slider from './component/slider.js'
 
-main()
+Slider(440, 3, 3000)

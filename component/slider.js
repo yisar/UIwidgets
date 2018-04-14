@@ -1,9 +1,8 @@
-export default function() {
+export default function(width,len,interval) {
   const container = document.querySelector('.container')
   const slider = document.querySelector('.slider')
   let dots = [].slice.call(document.querySelectorAll('.dots span'))
   let currentIndex = 0
-  let len = 3
   let isAnimate = false
   let timer
   // 无限滚动
@@ -24,19 +23,19 @@ export default function() {
         (speed > 0 && parseInt(slider.style.left) < newOffset)
       ) {
         slider.style.left = parseInt(slider.style.left) + speed + 'px'
-        if (slider.style.left > -440) {
-          slider.style.left = -1760 + 'px'
+        if (slider.style.left > -width) {
+          slider.style.left = -width*(len+1) + 'px'
         }
-        if (slider.style.left < -1760) {
-          slider.style.left = -440 + 'px'
+        if (slider.style.left < width*(len+1)) {
+          slider.style.left = -width + 'px'
         }
         setTimeout(go, interval)
       } else {
         slider.style.left = newOffset + 'px'
-        if (newOffset > -440) {
-          slider.style.left = -440 * len + 'px'
+        if (newOffset > -width) {
+          slider.style.left = -width * len + 'px'
         }
-        if (newOffset < -440 * len) {
+        if (newOffset < -width * len) {
           slider.style.left = '-440px'
         }
         isAnimate = false
@@ -48,13 +47,13 @@ export default function() {
   // 自动播放
   function play() {
     timer = setInterval(() => {
-      animate(-440)
+      animate(-width)
       currentIndex++
-      if (currentIndex == 3) {
+      if (currentIndex == len) {
         currentIndex = 0
       }
       showDot()
-    }, 3000)
+    }, interval)
   }
 
   // 停止播放
@@ -75,7 +74,7 @@ export default function() {
   function dotClick() {
     dots.forEach((item, index) => {
       item.onclick = () => {
-        let offset = -440 * (index - currentIndex)
+        let offset = -width * (index - currentIndex)
         currentIndex = index
         animate(offset)
         showDot()
@@ -84,6 +83,7 @@ export default function() {
   }
   container.onmouseover = stop
   container.onmouseout = play
+
   play()
   dotClick()
 }
