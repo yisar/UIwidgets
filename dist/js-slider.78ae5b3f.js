@@ -144,17 +144,98 @@ module.exports = reloadCSS;
         module.hot.dispose(reloadCSS);
         module.hot.accept(reloadCSS);
       
-},{"_css_loader":8}],14:[function(require,module,exports) {
+},{"_css_loader":8}],7:[function(require,module,exports) {
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-exports.default = window.onload = function () {
+exports.default = function () {
   var container = document.querySelector('.container');
   var slider = document.querySelector('.slider');
-  var dots = document.querySelectorAll('.dots span');
+  var dots = [].slice.call(document.querySelectorAll('.dots span'));
+  var currentIndex = 0;
+  var len = 3;
+  var isAnimate = false;
+  var timer = void 0;
+  // 无限滚动
+  function animate(offset) {
+    if (offset == 0) {
+      return;
+    }
+    isAnimate = true;
+    var time = 500; //位移总时间
+    var interval = 10; //间隔时间
+    var speed = offset / (time / interval); //每次位移量
+
+    var newOffset = parseInt(slider.style.left) + offset;
+
+    function go() {
+      if (speed < 0 && parseInt(slider.style.left) > newOffset || speed > 0 && parseInt(slider.style.left) < newOffset) {
+        slider.style.left = parseInt(slider.style.left) + speed + 'px';
+        if (slider.style.left > -440) {
+          slider.style.left = -1760 + 'px';
+        }
+        if (slider.style.left < -1760) {
+          slider.style.left = -440 + 'px';
+        }
+        setTimeout(go, interval);
+      } else {
+        slider.style.left = newOffset + 'px';
+        if (newOffset > -440) {
+          slider.style.left = -440 * len + 'px';
+        }
+        if (newOffset < -440 * len) {
+          slider.style.left = '-440px';
+        }
+        isAnimate = false;
+      }
+    }
+    go();
+  }
+
+  // 自动播放
+  function play() {
+    timer = setInterval(function () {
+      animate(-440);
+      currentIndex++;
+      if (currentIndex == 3) {
+        currentIndex = 0;
+      }
+      showDot();
+    }, 3000);
+  }
+
+  // 停止播放
+  function stop() {
+    clearInterval(timer);
+  }
+
+  // 圆点高亮
+  function showDot() {
+    dots.forEach(function (item) {
+      if (item.className == 'active') {
+        item.className = '';
+      }
+    });
+    dots[currentIndex].className = 'active';
+  }
+  // 圆点点击事件
+  function dotClick() {
+    dots.forEach(function (item, index) {
+      item.onclick = function () {
+        var offset = -440 * (index - currentIndex);
+        currentIndex = index;
+        animate(offset);
+        showDot();
+      };
+    });
+  }
+  container.onmouseover = stop;
+  container.onmouseout = play;
+  play();
+  dotClick();
 };
 },{}],2:[function(require,module,exports) {
 'use strict';
@@ -170,7 +251,7 @@ var _main2 = _interopRequireDefault(_main);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 (0, _main2.default)();
-},{"./static/style.css":6,"./component/main.js":14}],16:[function(require,module,exports) {
+},{"./static/style.css":6,"./component/main.js":7}],15:[function(require,module,exports) {
 
 var OVERLAY_ID = '__parcel__error__overlay__';
 
@@ -200,7 +281,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = '' || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + '58925' + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + '49696' + '/');
   ws.onmessage = function (event) {
     var data = JSON.parse(event.data);
 
@@ -339,5 +420,5 @@ function hmrAccept(bundle, id) {
     return hmrAccept(global.parcelRequire, id);
   });
 }
-},{}]},{},[16,2])
+},{}]},{},[15,2])
 //# sourceMappingURL=/js-slider.78ae5b3f.map
