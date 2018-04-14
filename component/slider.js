@@ -1,10 +1,11 @@
-export default function(width,len,interval) {
-  const container = document.querySelector('.container')
-  const slider = document.querySelector('.slider')
+export default function (width, len, interval) {
+  const container = document.querySelector('.slider')
+  const slider = document.querySelector('.list')
   let dots = [].slice.call(document.querySelectorAll('.dots span'))
   let currentIndex = 0
   let isAnimate = false
   let timer
+
   // 无缝滚动
   function animate(offset) {
     if (offset == 0) {
@@ -17,16 +18,16 @@ export default function(width,len,interval) {
 
     let newOffset = parseInt(slider.style.left) + offset
 
-    function go() {
+    const go = () => {
       if (
         (speed < 0 && parseInt(slider.style.left) > newOffset) ||
         (speed > 0 && parseInt(slider.style.left) < newOffset)
       ) {
         slider.style.left = parseInt(slider.style.left) + speed + 'px'
         if (slider.style.left > -width) {
-          slider.style.left = -width*(len+1) + 'px'
+          slider.style.left = -width * (len + 1) + 'px'
         }
-        if (slider.style.left < width*(len+1)) {
+        if (slider.style.left < width * (len + 1)) {
           slider.style.left = -width + 'px'
         }
         setTimeout(go, interval)
@@ -41,6 +42,7 @@ export default function(width,len,interval) {
         isAnimate = false
       }
     }
+
     go()
   }
 
@@ -70,6 +72,7 @@ export default function(width,len,interval) {
     })
     dots[currentIndex].className = 'active'
   }
+
   // 圆点点击事件
   function dotClick() {
     dots.forEach((item, index) => {
@@ -81,9 +84,11 @@ export default function(width,len,interval) {
       }
     })
   }
-  
+
   container.onmouseover = stop
   container.onmouseout = play
+  window.onblur = stop
+  window.onfocus = play
 
   play()
   dotClick()
