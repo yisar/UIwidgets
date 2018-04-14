@@ -5,15 +5,15 @@ export default function(width,len,interval) {
   let currentIndex = 0
   let isAnimate = false
   let timer
-  // 无限滚动
+  // 无缝滚动
   function animate(offset) {
     if (offset == 0) {
       return
     }
     isAnimate = true
-    const time = 500 //位移总时间
-    const interval = 10 //间隔时间
-    const speed = offset / (time / interval) //每次位移量
+    const time = 500
+    const interval = 10
+    const speed = offset / (time / interval)
 
     let newOffset = parseInt(slider.style.left) + offset
 
@@ -81,6 +81,7 @@ export default function(width,len,interval) {
       }
     })
   }
+  
   container.onmouseover = stop
   container.onmouseout = play
 
