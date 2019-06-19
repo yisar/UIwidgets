@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="./static/style.css">
+  <title>slider demo</title>
+</head>
+
+<body>
+  <div id="wrap">
+    <ul class="imgs">
+      <li>
+        <img src="./static/1.png">
+      </li>
+      <li>
+        <img src="./static/2.jpg">
+      </li>
+      <li>
+        <img src="./static/3.jpg">
+      </li>
+    </ul>
+    <div class="dots">
+      <b class="active"></b>
+      <b></b>
+      <b></b>
+    </div>
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</body>
+
+<script src="./index.js"></script>
+<script>
+  new Slider({
+    width: 400,
+    loop: true,
+    node: document.getElementById('wrap'),
+  })
+</script>
+
+</html>
